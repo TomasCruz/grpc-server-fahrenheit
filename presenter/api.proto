@@ -1,0 +1,22 @@
+syntax = "proto3";
+package presenter;
+
+// NoParams is a necessary empty message type
+message NoParamsMsg {
+};
+
+// HealthMsg represents service health output data
+message HealthMsg {
+    bool health = 1;
+}
+
+// ConversionMsg represents input/output data for conversion
+message ConversionMsg {
+    double input = 1;
+}
+
+service Convertor {
+    rpc Health(NoParamsMsg) returns (HealthMsg) {}
+    rpc F2C(ConversionMsg) returns (ConversionMsg) {}
+    rpc C2F(ConversionMsg) returns (ConversionMsg) {}
+}
