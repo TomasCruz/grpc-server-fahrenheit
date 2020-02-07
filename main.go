@@ -14,8 +14,12 @@ import (
 	"google.golang.org/grpc"
 )
 
+func readEnvVar(varName string) string {
+	return os.Getenv(varName)
+}
+
 func readAndCheckEnvVar(varName string) (varVal string) {
-	if varVal = os.Getenv(varName); varVal == "" {
+	if varVal = readEnvVar(varName); varVal == "" {
 		err := fmt.Errorf("%s environment variable not set properly", varName)
 		log.Fatal(err)
 	}
@@ -23,9 +27,20 @@ func readAndCheckEnvVar(varName string) (varVal string) {
 	return
 }
 
+func readAndCheckIntEnvVar(varName string) (varVal string) {
+	varVal = readAndCheckEnvVar(varName)
+	if _, err := strconv.Atoi(varVal); err != nil {
+		err := fmt.Errorf("Value of %s environment variable has to be an integer", varName)
+		log.Fatal(err)
+	}
+
+	return
+}
+
 func setupFromEnvVars() (config configuration.Config) {
-	config.Port = readAndCheckEnvVar("GRPC_SERVER_PORT")
-	config.DB = readAndCheckEnvVar("GRPC_SERVER_DB")
+	config.Port = readAndCheckIntEnvVar("GRPC_PORT")
+	config.DbPort = readAndCheckIntEnvVar("GRPC_DB_PORT")
+	config.DbReqPswd = readEnvVar("GRPC_DB_REQ_PSWD")
 	return
 }
 
@@ -56,16 +71,23 @@ func startGRPCServer(port string) error {
 	return nil
 }
 
+func composeRedisDbURL(c configuration.Config) (url string) {
+	//url = fmt.Sprintf("redis://guest:guest@%s:%s/0", c.DbHost, c.DbPort)
+	url = fmt.Sprintf("redis://%s:%s/0", c.DbHost, c.DbPort)
+	if c.DbReqPswd != "" {
+		url = fmt.Sprintf("%s?password=%s", url, c.DbReqPswd)
+	}
+
+	return
+}
+
 func main() {
 	// populate configuration
 	config := setupFromEnvVars()
-	if _, err := strconv.Atoi(config.Port); err != nil {
-		log.Fatalf("Port environment variable has to be an integer")
-	}
 
 	// set DB interface to service
-	databaseInterface := database.InitializeDatabase(config.DB)
-	model.SetDatabaseInterface(databaseInterface)
+	databaseInterface := database.InitializeDatabase(composeRedisDbURL(config))
+	model.SetDatabase(databaseInterface)
 
 	// fire the gRPC server in a goroutine
 	go func() {

@@ -9,6 +9,6 @@ import (
 )
 
 func testSetup() (*grpc.ClientConn, error) {
-	port := readAndCheckEnvVar("GRPC_SERVER_PORT")
+	port := readAndCheckEnvVar("GRPC_PORT")
 	return grpc.Dial(fmt.Sprintf("localhost:%s", port), grpc.WithInsecure())
 }

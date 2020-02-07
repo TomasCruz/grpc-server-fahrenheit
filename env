@@ -1,2 +1,6 @@
-export GRPC_SERVER_DB=postgres://grpc:secret@localhost:5432/grpc?sslmode=disable
-export GRPC_SERVER_PORT=7777
+export GRPC_PORT=7777
+
+# Database
+export GRPC_DB_HOST=localhost
+export GRPC_DB_PORT=6379
+export GRPC_DB_REQ_PSWD=averysecretpassword

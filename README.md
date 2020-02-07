@@ -26,10 +26,11 @@ ConversionMsg
 ## Build
 ### Prerequisites:
 - standard gRPC installation
-- either create a db with 'make create_db', or start it if it's been created with 'make start_db'
 
 ### building
-From terminal, run 'source ./env', then , then 'make'
+- run 'source ./env'
+- either create a db with 'make create_db', or start it if it's been created with 'make start_db'
+- run 'make'
 
 ## Run
 'make run' from terminal

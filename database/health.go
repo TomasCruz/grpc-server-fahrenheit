@@ -1,14 +1,16 @@
 package database
 
 // Health verifies the schema
-func (pDb postgresDb) Health() (status bool, err error) {
-	var cnt int64
-	if err = pDb.db.QueryRow("select count(*) from pg_catalog.pg_tables where tablename='degrees';").
-		Scan(&cnt); err != nil {
+func (rDb radisDb) Health() (status bool, err error) {
+	conn := rDb.pool.Get()
+	defer conn.Close()
 
+	// Test the connection
+	r, err := conn.Do("PING")
+	if err != nil {
 		return
 	}
 
-	status = cnt == 1
+	status = r.(string) == "PONG"
 	return
 }
