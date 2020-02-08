@@ -6,11 +6,6 @@ func (rDb radisDb) Health() (status bool, err error) {
 	defer conn.Close()
 
 	// Test the connection
-	r, err := conn.Do("PING")
-	if err != nil {
-		return
-	}
-
-	status = r.(string) == "PONG"
+	status, err = pingPong(conn)
 	return
 }

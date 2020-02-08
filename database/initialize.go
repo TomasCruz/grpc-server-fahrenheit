@@ -38,9 +38,23 @@ func InitializeDatabase(dbURL string) model.Database {
 				}
 			}
 
+			if _, err = pingPong(conn); err != nil {
+				return
+			}
+
 			return
 		},
 	}
 
 	return rDb
+}
+
+func pingPong(conn redis.Conn) (status bool, err error) {
+	var r interface{}
+	if r, err = conn.Do("PING"); err != nil {
+		return
+	}
+
+	status = r.(string) == "PONG"
+	return
 }
