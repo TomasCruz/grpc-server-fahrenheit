@@ -12,7 +12,7 @@ message HealthMsg {
 
 // ConversionMsg represents input/output data for conversion
 message ConversionMsg {
-    double input = 1;
+    double number = 1;
 }
 
 service Convertor {

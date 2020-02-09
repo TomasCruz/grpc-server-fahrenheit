@@ -18,14 +18,14 @@ func (s *Server) Health(ctx context.Context, req *NoParamsMsg) (*HealthMsg, erro
 
 // F2C calculates temperature in C from F
 func (s *Server) F2C(ctx context.Context, req *ConversionMsg) (*ConversionMsg, error) {
-	f := req.GetInput()
+	f := req.GetNumber()
 	c, err := model.F2C(f)
-	return &ConversionMsg{Input: c}, err
+	return &ConversionMsg{Number: c}, err
 }
 
 // C2F calculates temperature in F from C
 func (s *Server) C2F(ctx context.Context, req *ConversionMsg) (*ConversionMsg, error) {
-	c := req.GetInput()
+	c := req.GetNumber()
 	f, err := model.C2F(c)
-	return &ConversionMsg{Input: f}, err
+	return &ConversionMsg{Number: f}, err
 }

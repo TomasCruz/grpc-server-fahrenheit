@@ -2,6 +2,8 @@
 gRPC server for celsuis/fahrenheit conversion
 
 ## API
+See [API messages](#api-messages) for message formats referenced here
+
 ### Health
 displays service health status
 #### input
@@ -22,6 +24,11 @@ converts fahrenheit to celsius
 ConversionMsg
 #### output
 ConversionMsg
+
+## API messages
+- NoParamsMsg is an empty message
+- HealthMsg contains bool health
+- ConversionMsg contains double number
 
 ## Build
 ### Prerequisites:
