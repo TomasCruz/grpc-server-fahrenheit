@@ -57,5 +57,5 @@ func composeRedisDbURL(c configuration.Config) (url string) {
 
 func gracefulShutdown(grpcServer *grpc.Server) {
 	grpcServer.GracefulStop()
-	fmt.Println("Graceful shutdown")
+	//fmt.Println("Graceful shutdown")
 }
