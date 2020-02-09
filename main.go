@@ -46,6 +46,13 @@ func main() {
 	gracefulShutdown(grpcServer)
 }
 
+func setupFromEnvVars() (config configuration.Config) {
+	config.Port = readAndCheckIntEnvVar("GRPC_PORT")
+	config.DbPort = readAndCheckIntEnvVar("GRPC_DB_PORT")
+	config.DbReqPswd = readEnvVar("GRPC_DB_REQ_PSWD")
+	return
+}
+
 func composeRedisDbURL(c configuration.Config) (url string) {
 	url = fmt.Sprintf("redis://%s:%s/0", c.DbHost, c.DbPort)
 	if c.DbReqPswd != "" {
