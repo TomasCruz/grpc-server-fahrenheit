@@ -5,7 +5,16 @@ import (
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/TomasCruz/grpc-server-fahrenheit/configuration"
 )
+
+func setupFromEnvVars() (config configuration.Config) {
+	config.Port = readAndCheckIntEnvVar("GRPC_PORT")
+	config.DbPort = readAndCheckIntEnvVar("GRPC_DB_PORT")
+	config.DbReqPswd = readEnvVar("GRPC_DB_REQ_PSWD")
+	return
+}
 
 func readEnvVar(varName string) string {
 	return os.Getenv(varName)

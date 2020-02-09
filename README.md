@@ -25,6 +25,7 @@ ConversionMsg
 
 ## Build
 ### Prerequisites:
+- standard Docker installation
 - standard gRPC installation
 
 ### building
@@ -39,5 +40,5 @@ ConversionMsg
 'make test' from terminal for unit tests
 
 ## Integration tests
-If not ran already, run steps for build and run
+If not ran already, run steps for build and run.
 In another terminal, navigate to directory containing Makefile, then 'source ./env', then 'make integration'
