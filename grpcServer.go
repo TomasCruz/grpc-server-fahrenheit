@@ -25,7 +25,7 @@ func registerGRPCServer(port string) (grpcServer *grpc.Server, listener net.List
 
 func startGRPCServer(grpcServer *grpc.Server, listener net.Listener, port string) (err error) {
 	// start the server
-	log.Printf("starting gRPC server on localhost:%s", port)
+	log.Printf("starting gRPC server on :%s", port)
 	err = grpcServer.Serve(listener)
 	return
 }

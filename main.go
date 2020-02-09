@@ -23,7 +23,7 @@ func main() {
 
 	// graceful shutdown
 	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt)
+	signal.Notify(stop, os.Interrupt, os.Kill)
 
 	// register gRPC server
 	var (
