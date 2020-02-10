@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/TomasCruz/grpc-server-fahrenheit/api"
 	"github.com/TomasCruz/grpc-server-fahrenheit/presenter"
 	"google.golang.org/grpc"
 )
@@ -19,7 +20,7 @@ func registerGRPCServer(port string) (grpcServer *grpc.Server, listener net.List
 
 	// create and register server instance
 	grpcServer = grpc.NewServer()
-	presenter.RegisterConvertorServer(grpcServer, &presenter.Server{})
+	api.RegisterConvertorServer(grpcServer, &presenter.Server{})
 	return
 }
 

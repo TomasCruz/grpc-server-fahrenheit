@@ -1,5 +1,5 @@
 syntax = "proto3";
-package presenter;
+package api;
 
 // NoParams is a necessary empty message type
 message NoParamsMsg {

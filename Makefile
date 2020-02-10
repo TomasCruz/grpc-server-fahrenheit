@@ -4,7 +4,7 @@ clean:
 	go clean
 
 generate_grpc_code:
-	protoc --go_out=plugins=grpc:. presenter/api.proto
+	protoc --go_out=plugins=grpc:. api/api.proto
 
 build:
 	go build -o bin/server

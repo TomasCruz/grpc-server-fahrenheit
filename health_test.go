@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/TomasCruz/grpc-server-fahrenheit/presenter"
+	"github.com/TomasCruz/grpc-server-fahrenheit/api"
 
 	"gotest.tools/assert"
 )
@@ -17,13 +17,13 @@ func TestHealthOK(t *testing.T) {
 	assert.NilError(t, err)
 	defer conn.Close()
 
-	c := presenter.NewConvertorClient(conn)
+	c := api.NewConvertorClient(conn)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(100)*time.Millisecond)
 	defer cancel()
 
-	response, err := c.Health(ctx, &presenter.NoParamsMsg{})
+	response, err := c.Health(ctx, &api.NoParamsMsg{})
 
 	assert.NilError(t, err)
 	assert.Assert(t, response.Health == true)
