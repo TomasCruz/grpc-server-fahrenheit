@@ -4,15 +4,18 @@ import (
 	"fmt"
 
 	"github.com/gomodule/redigo/redis"
+	"github.com/pkg/errors"
 )
 
 func (rDb radisDb) GetByC(cels float64) (fahr float64, notFound bool, err error) {
 	conn := rDb.pool.Get()
 	defer conn.Close()
 
-	if fahr, err = rDb.get(conn, "C", cels); err == redis.ErrNil {
-		notFound = true
-		err = nil
+	if fahr, err = rDb.get(conn, "C", cels); err != nil {
+		if errors.Cause(err) == redis.ErrNil {
+			notFound = true
+			err = nil
+		}
 	}
 
 	return
@@ -22,9 +25,11 @@ func (rDb radisDb) GetByF(fahr float64) (cels float64, notFound bool, err error)
 	conn := rDb.pool.Get()
 	defer conn.Close()
 
-	if cels, err = rDb.get(conn, "F", fahr); err == redis.ErrNil {
-		notFound = true
-		err = nil
+	if cels, err = rDb.get(conn, "F", fahr); err != nil {
+		if errors.Cause(err) == redis.ErrNil {
+			notFound = true
+			err = nil
+		}
 	}
 
 	return
@@ -56,11 +61,19 @@ func (rDb radisDb) SetPair(cels, fahr float64) (err error) {
 func (rDb radisDb) get(conn redis.Conn, id string, deg float64) (out float64, err error) {
 	key := fmt.Sprintf("%s%e", id, deg)
 	out, err = redis.Float64(conn.Do("GET", key))
+	if err != nil {
+		err = errors.WithStack(err)
+	}
+
 	return
 }
 
 func (rDb radisDb) set(conn redis.Conn, id string, deg1 float64, deg2 float64) (err error) {
 	key := fmt.Sprintf("%s%e", id, deg1)
 	_, err = conn.Do("SET", key, deg2)
+	if err != nil {
+		err = errors.WithStack(err)
+	}
+
 	return
 }

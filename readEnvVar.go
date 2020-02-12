@@ -1,10 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/TomasCruz/grpc-server-fahrenheit/callstack"
+	"github.com/pkg/errors"
 )
 
 func readEnvVar(varName string) string {
@@ -13,7 +15,8 @@ func readEnvVar(varName string) string {
 
 func readAndCheckEnvVar(varName string) (varVal string) {
 	if varVal = readEnvVar(varName); varVal == "" {
-		err := fmt.Errorf("%s environment variable not set properly", varName)
+		err := errors.Errorf("%s environment variable not set properly", varName)
+		callstack.LogErrStack(err)
 		log.Fatal(err)
 	}
 
@@ -23,7 +26,8 @@ func readAndCheckEnvVar(varName string) (varVal string) {
 func readAndCheckIntEnvVar(varName string) (varVal string) {
 	varVal = readAndCheckEnvVar(varName)
 	if _, err := strconv.Atoi(varVal); err != nil {
-		err := fmt.Errorf("Value of %s environment variable has to be an integer", varName)
+		err = errors.Wrapf(err, "Value of %s environment variable has to be an integer", varName)
+		callstack.LogErrStack(err)
 		log.Fatal(err)
 	}
 

@@ -19,9 +19,16 @@ func registerGRPCServer(port string) (grpcServer *grpc.Server, listener net.List
 	}
 
 	// create and register server instance
-	grpcServer = grpc.NewServer()
+	grpcServer = grpc.NewServer(withServerUnaryInterceptor())
 	api.RegisterConvertorServer(grpcServer, &presenter.Server{})
 	return
+}
+
+func withServerUnaryInterceptor() grpc.ServerOption {
+	return grpc.UnaryInterceptor(
+		presenter.UnaryInterceptorChainer(
+			presenter.ErrRepackagingInterceptor,
+			presenter.DummyInterceptor))
 }
 
 func startGRPCServer(grpcServer *grpc.Server, listener net.Listener, port string) (err error) {

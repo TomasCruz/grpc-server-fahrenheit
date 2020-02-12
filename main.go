@@ -48,6 +48,7 @@ func main() {
 
 func setupFromEnvVars() (config configuration.Config) {
 	config.Port = readAndCheckIntEnvVar("GRPC_PORT")
+	config.DbHost = readEnvVar("GRPC_DB_HOST")
 	config.DbPort = readAndCheckIntEnvVar("GRPC_DB_PORT")
 	config.DbReqPswd = readEnvVar("GRPC_DB_REQ_PSWD")
 	return
