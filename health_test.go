@@ -7,8 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/TomasCruz/grpc-server-fahrenheit/api"
-
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 	"gotest.tools/assert"
 )
 
@@ -17,14 +16,14 @@ func TestHealthOK(t *testing.T) {
 	assert.NilError(t, err)
 	defer conn.Close()
 
-	c := api.NewConvertorClient(conn)
+	healthClient := healthpb.NewHealthClient(conn)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(100)*time.Millisecond)
 	defer cancel()
 
-	response, err := c.Health(ctx, &api.NoParamsMsg{})
+	response, err := healthClient.Check(ctx, &healthpb.HealthCheckRequest{})
 
 	assert.NilError(t, err)
-	assert.Assert(t, response.Health == true)
+	assert.Assert(t, response.Status == healthpb.HealthCheckResponse_SERVING)
 }

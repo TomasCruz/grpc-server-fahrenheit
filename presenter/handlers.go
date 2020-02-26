@@ -11,16 +11,6 @@ import (
 type Server struct {
 }
 
-// Health returns health status of the service
-func (s *Server) Health(ctx context.Context, req *api.NoParamsMsg) (hm *api.HealthMsg, err error) {
-	var status bool
-
-	status, err = model.Health()
-	hm = &api.HealthMsg{Health: status}
-
-	return
-}
-
 // F2C calculates temperature in C from F
 func (s *Server) F2C(ctx context.Context, req *api.ConversionMsg) (cm *api.ConversionMsg, err error) {
 	f := req.GetNumber()

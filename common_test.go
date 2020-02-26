@@ -10,5 +10,11 @@ import (
 
 func testSetup() (*grpc.ClientConn, error) {
 	port := readAndCheckEnvVar("GRPC_PORT")
-	return grpc.Dial(fmt.Sprintf("localhost:%s", port), grpc.WithInsecure())
+	serviceConfig := grpc.WithDefaultServiceConfig(`{
+		"healthCheckConfig": {
+		  "serviceName": ""
+		}
+	  }`)
+
+	return grpc.Dial(fmt.Sprintf("localhost:%s", port), grpc.WithInsecure(), serviceConfig)
 }

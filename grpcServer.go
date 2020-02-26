@@ -8,6 +8,8 @@ import (
 	"github.com/TomasCruz/grpc-server-fahrenheit/api"
 	"github.com/TomasCruz/grpc-server-fahrenheit/presenter"
 	"google.golang.org/grpc"
+	ghealth "google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 func registerGRPCServer(port string) (grpcServer *grpc.Server, listener net.Listener, err error) {
@@ -21,6 +23,11 @@ func registerGRPCServer(port string) (grpcServer *grpc.Server, listener net.List
 	// create and register server instance
 	grpcServer = grpc.NewServer(withServerUnaryInterceptor())
 	api.RegisterConvertorServer(grpcServer, &presenter.Server{})
+
+	// create and register health server
+	healthServer := ghealth.NewServer()
+	healthpb.RegisterHealthServer(grpcServer, healthServer)
+
 	return
 }
 
