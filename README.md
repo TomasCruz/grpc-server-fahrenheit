@@ -6,6 +6,7 @@ See [API messages](#api-messages) for message formats referenced here
 
 ### Health
 [Health proto](https://github.com/grpc/grpc/blob/master/src/proto/grpc/health/v1/health.proto "gRPC Health v1 proto")
+
 [grpc_health_v1 library](https://godoc.org/google.golang.org/grpc/health/grpc_health_v1)
 
 grpc_health_v1.HealthClient's Check method is used for healthcheck
